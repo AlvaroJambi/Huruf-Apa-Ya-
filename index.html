@@ -2,12 +2,12 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Huruf apa ya?</title>
+    <title>huruf apa ya?</title>
     <style>
-        /* Font ramah anak: Comic Sans MS atau Arial */
+        /* font ramah anak */
         body { 
-            font-family: 'Comic Sans MS', 'Arial', sans-serif; 
-            background: url('Background.png') no-repeat center center fixed; 
+            font-family: 'comic sans ms', 'arial', sans-serif; 
+            background: url('background.png') no-repeat center center fixed; 
             background-size: cover;
             display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; 
             overflow: hidden;
@@ -23,20 +23,21 @@
             width: 250px; padding: 15px; margin: 0 auto 20px auto;
             background: #d63031; border-radius: 30px; font-weight: bold; color: white;
             font-size: 1.8rem; box-shadow: 0 6px 0 #b71c1c; border: 3px solid #b71c1c;
+            text-transform: lowercase;
         }
-        .header { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold; color: white; }
+        .header { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold; color: white; text-transform: lowercase; }
         .image { font-size: 100px; margin-bottom: 20px; filter: drop-shadow(0px 10px 5px rgba(0,0,0,0.2)); }
         
-        /* Kata menggunakan HURUF KAPITAL */
-        .word { font-size: 3rem; font-weight: bold; color: white; letter-spacing: 12px; margin-bottom: 25px; text-shadow: 2px 2px #333; text-transform: uppercase; }
+        /* kata menggunakan huruf kecil */
+        .word { font-size: 3rem; font-weight: bold; color: white; letter-spacing: 12px; margin-bottom: 25px; text-shadow: 2px 2px #333; text-transform: lowercase; }
         
         .options { display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; }
         
-        /* Tombol Pilihan menggunakan HURUF KAPITAL */
+        /* tombol pilihan menggunakan huruf kecil */
         .btn-option { 
             width: 65px; height: 65px; border-radius: 20px; font-size: 24px; font-weight: bold; 
             cursor: pointer; color: white; border: none; box-shadow: 0 6px 0 rgba(0,0,0,0.2);
-            text-transform: uppercase;
+            text-transform: lowercase;
         }
         .nav-btn { width: 65px; height: 65px; border-radius: 50%; border: none; background: #6c5ce7; color: white; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
         .confetti { position: fixed; font-size: 30px; z-index: 200; pointer-events: none; }
@@ -50,12 +51,12 @@
 
     <div class="card">
         <div class="header">
-            <span id="scoreText">SKOR: 0</span>
+            <span id="scoreText">skor: 0</span>
             <span id="levelText">1/20</span>
         </div>
-        <div class="title-badge">HURUF APA YA?</div>
+        <div class="title-badge">huruf apa ya?</div>
         <div class="image" id="imgDisplay">🍎</div>
-        <div class="word" id="wordDisplay">_PEL</div>
+        <div class="word" id="wordDisplay">_pel</div>
         <div class="options" id="options"></div>
         <div class="nav-container" style="display:flex; justify-content:center; gap:25px;">
             <button class="nav-btn" onclick="prev()">◀</button>
@@ -65,16 +66,16 @@
 
     <script>
         const levels = [
-            {img: '🍎', word: '_PEL', answer: 'A'}, {img: '🍌', word: '_ISANG', answer: 'P'},
-            {img: '🍇', word: '_NGGUR', answer: 'A'}, {img: '🍓', word: '_TRAWBERI', answer: 'S'},
-            {img: '🍍', word: '_ANAS', answer: 'N'}, {img: '🍒', word: '_ERI', answer: 'C'},
-            {img: '🥝', word: '_IWI', answer: 'K'}, {img: '🍉', word: '_EMANGKA', answer: 'S'},
-            {img: '🥑', word: '_PUKAT', answer: 'A'}, {img: '🍑', word: '_ERSIK', answer: 'P'},
-            {img: '🥭', word: '_ANGGA', answer: 'M'}, {img: '🍋', word: '_EMON', answer: 'L'},
-            {img: '🥥', word: '_ELAPA', answer: 'K'}, {img: '🍐', word: '_IR', answer: 'P'},
-            {img: '🍈', word: '_ELON', answer: 'M'}, {img: '🍊', word: '_ERUK', answer: 'J'},
-            {img: '🍏', word: '_PEL HIJAU', answer: 'A'}, {img: '🫐', word: '_LUBERRY', answer: 'B'},
-            {img: '🍅', word: '_OMAT', answer: 'T'}, {img: '🌽', word: '_AGUNG', answer: 'J'}
+            {img: '🍎', word: '_pel', answer: 'a'}, {img: '🍌', word: '_isang', answer: 'p'},
+            {img: '🍇', word: '_nggur', answer: 'a'}, {img: '🍓', word: '_trawberi', answer: 's'},
+            {img: '🍍', word: '_anas', answer: 'n'}, {img: '🍒', word: '_eri', answer: 'c'},
+            {img: '🥝', word: '_iwi', answer: 'k'}, {img: '🍉', word: '_emangka', answer: 's'},
+            {img: '🥑', word: '_pukat', answer: 'a'}, {img: '🍑', word: '_ersik', answer: 'p'},
+            {img: '🥭', word: '_angga', answer: 'm'}, {img: '🍋', word: '_emon', answer: 'l'},
+            {img: '🥥', word: '_elapa', answer: 'k'}, {img: '🍐', word: '_ir', answer: 'p'},
+            {img: '🍈', word: '_elon', answer: 'm'}, {img: '🍊', word: '_eruk', answer: 'j'},
+            {img: '🍏', word: '_pel hijau', answer: 'a'}, {img: '🫐', word: '_luberri', answer: 'b'},
+            {img: '🍅', word: '_omat', answer: 't'}, {img: '🌽', word: '_agung', answer: 'j'}
         ];
 
         let current = 0, score = 0;
@@ -92,7 +93,7 @@
             const optDiv = document.getElementById('options');
             optDiv.innerHTML = '';
             
-            [l.answer, 'X', 'Y'].sort(() => Math.random()-0.5).forEach(char => {
+            [l.answer, 'x', 'y'].sort(() => Math.random()-0.5).forEach(char => {
                 const b = document.createElement('button');
                 b.className = 'btn-option'; b.innerText = char;
                 b.style.backgroundColor = '#' + Math.floor(Math.random()*16777215).toString(16);
@@ -100,7 +101,7 @@
                     if(char === l.answer) {
                         document.getElementById('wordDisplay').innerText = l.word.replace('_', char);
                         sBenar.play();
-                        score += 10; document.getElementById('scoreText').innerText = `SKOR: ${score}`;
+                        score += 10; document.getElementById('scoreText').innerText = `skor: ${score}`;
                         setTimeout(next, 1500);
                     } else {
                         sSalah.play();
