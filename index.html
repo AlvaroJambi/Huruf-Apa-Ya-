@@ -15,28 +15,29 @@
             background: rgba(255, 255, 255, 0.9); padding: 30px; border-radius: 50px; 
             text-align: center; width: 350px; box-shadow: 0 15px 30px rgba(0,0,0,0.2); 
         }
-        /* Judul di atas gambar */
-        .title { font-size: 1.8rem; font-weight: bold; color: #ff9ff3; margin-bottom: 10px; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
+        /* Judul dalam tombol bulat */
+        .title-badge { 
+            width: 200px; padding: 10px; margin: 0 auto 20px auto;
+            background: #ffeaa7; border-radius: 30px; font-weight: bold; color: #d63031;
+            box-shadow: 0 4px 0 #fab1a0; border: 2px solid #fab1a0;
+        }
         .header { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold; color: #777; }
         .image { font-size: 80px; margin-bottom: 20px; filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.2)); }
         .word { font-size: 2.5rem; font-weight: bold; color: #555; letter-spacing: 8px; margin-bottom: 20px; }
         
         .options { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
         .btn-option { 
-            width: 55px; height: 55px; border: 3px dashed #ff9ff3; border-radius: 50%; 
+            width: 55px; height: 55px; border: 3px dashed #ffffff; border-radius: 50%; 
             font-size: 20px; font-weight: bold; cursor: pointer; color: white;
-            background: #f8a5c2; box-shadow: 0 4px 0 #e77f67;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
         }
 
-        /* Tombol Bulat Navigasi */
-        .nav-container { display: flex; justify-content: center; gap: 15px; }
+        .nav-container { display: flex; justify-content: center; gap: 20px; }
         .nav-btn { 
-            width: 50px; height: 50px; border-radius: 50%; border: none; 
+            width: 60px; height: 60px; border-radius: 50%; border: none; 
             background: #a29bfe; color: white; cursor: pointer; font-size: 0.7rem; font-weight: bold;
             box-shadow: 0 4px 0 #6c5ce7; transition: 0.2s;
         }
-        .nav-btn:hover { transform: scale(1.1); }
-        
         .confetti { position: fixed; font-size: 25px; z-index: 200; pointer-events: none; }
     </style>
 </head>
@@ -51,13 +52,12 @@
             <span id="scoreText">Skor: 0</span>
             <span id="levelText">1/20</span>
         </div>
-        <div class="title">Huruf apa ya?</div>
+        <div class="title-badge">Huruf apa ya?</div>
         <div class="image" id="imgDisplay">🍎</div>
         <div class="word" id="wordDisplay">_PEL</div>
         <div class="options" id="options"></div>
         
         <div class="nav-container">
-            <button class="nav-btn" onclick="load()">Ulang</button>
             <button class="nav-btn" onclick="prev()">Kembali</button>
             <button class="nav-btn" onclick="next()">Lanjut</button>
         </div>
@@ -66,7 +66,7 @@
     <script>
         const levels = [
             {img: '🍎', word: '_PEL', answer: 'A'}, {img: '🍌', word: '_ISANG', answer: 'P'},
-            {img: '🍇', word: '_NGGUR', answer: 'A'}, {img: '🍓', word: '_TR_WBERI', answer: 'S'},
+            {img: '🍇', word: '_NGGUR', answer: 'A'}, {img: '🍓', word: '_TRAWBERI', answer: 'S'},
             {img: '🍍', word: '_ANAS', answer: 'N'}, {img: '🍒', word: '_ERI', answer: 'C'},
             {img: '🥝', word: '_IWI', answer: 'K'}, {img: '🍉', word: '_EMANGKA', answer: 'S'},
             {img: '🥑', word: '_PUKAT', answer: 'A'}, {img: '🍑', word: '_ERSIK', answer: 'P'},
@@ -77,6 +77,7 @@
             {img: '🍅', word: '_OMAT', answer: 'T'}, {img: '🌽', word: '_AGUNG', answer: 'J'}
         ];
         let current = 0, score = 0;
+        const colors = ['#f8a5c2', '#778beb', '#cf6a87', '#546de5', '#e15f41', '#574b90'];
 
         document.addEventListener('click', () => document.getElementById('bgMusic').play(), {once: true});
 
@@ -102,6 +103,7 @@
             [l.answer, 'X', 'Y'].sort(() => Math.random()-0.5).forEach(char => {
                 const b = document.createElement('button');
                 b.className = 'btn-option'; b.innerText = char;
+                b.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 b.onclick = () => {
                     if(char === l.answer) {
                         document.getElementById('wordDisplay').innerText = l.word.replace('_', char);
