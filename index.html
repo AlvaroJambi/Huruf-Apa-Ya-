@@ -2,65 +2,96 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Tebak Huruf Depan</title>
+    <title>Tebak Huruf Clay 3D</title>
     <style>
-        body { font-family: 'Arial', sans-serif; background-color: #f0f7ff; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .game-card { background: white; padding: 30px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; width: 350px; }
-        .image-placeholder { font-size: 80px; margin: 20px 0; }
-        .word-display { font-size: 2.5rem; font-weight: bold; color: #333; margin: 20px 0; }
-        .options { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
-        .btn-option { width: 60px; height: 60px; border-radius: 15px; border: none; font-size: 24px; font-weight: bold; cursor: pointer; color: white; }
-        #message { margin-top: 20px; font-weight: bold; font-size: 1.2rem; }
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: url('Background.png') no-repeat center center fixed; 
+            background-size: cover;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; 
+        }
+        .card { background: rgba(255, 255, 255, 0.9); padding: 40px; border-radius: 50px; text-align: center; width: 350px; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+        .image { font-size: 100px; margin: 20px 0; filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.2)); }
+        .word { font-size: 3rem; font-weight: bold; color: #555; letter-spacing: 10px; margin: 20px 0; }
+        .options { display: flex; justify-content: center; gap: 20px; }
+        
+        /* Tombol dengan garis putus-putus */
+        .btn { 
+            width: 70px; height: 70px; border: 4px dashed #ff9ff3; border-radius: 20px; 
+            font-size: 28px; font-weight: bold; cursor: pointer; color: white;
+            background: #f8a5c2; box-shadow: 0 5px 0 #e77f67; /* Efek timbul */
+            transition: transform 0.1s;
+        }
+        .btn:active { transform: translateY(5px); box-shadow: none; }
+        
+        .confetti { position: fixed; font-size: 40px; z-index: 200; pointer-events: none; }
     </style>
 </head>
 <body>
 
-<div class="game-card">
-    <h2 style="color: #666;">Tebak Huruf Depan</h2>
-    <div class="image-placeholder" id="image">🥕</div>
-    <div class="word-display" id="word">_ORTEL</div>
-    <div class="options" id="options"></div>
-    <div id="message"></div>
-</div>
+    <audio id="bgMusic" src="Musik.mp3" loop></audio>
+    <audio id="soundBenar" src="Benar.mp3"></audio>
+    <audio id="soundSalah" src="Salah.mp3"></audio>
 
-<script>
-    const data = [
-        { img: '🥕', word: '_ORTEL', answer: 'W', options: ['A', 'R', 'W'] },
-        { img: '🏀', word: '_OLA', answer: 'B', options: ['H', 'R', 'B'] }
-    ];
-    let current = 0;
+    <div class="card">
+        <div class="image" id="imgDisplay">🍎</div>
+        <div class="word" id="wordDisplay">_PEL</div>
+        <div class="options" id="options"></div>
+    </div>
 
-    function loadLevel() {
-        const level = data[current];
-        document.getElementById('image').innerText = level.img;
-        document.getElementById('word').innerText = level.word;
-        document.getElementById('message').innerText = "";
-        const optionsDiv = document.getElementById('options');
-        optionsDiv.innerHTML = '';
-        
-        level.options.forEach(opt => {
-            const btn = document.createElement('button');
-            btn.className = 'btn-option';
-            btn.style.backgroundColor = '#74b9ff';
-            btn.innerText = opt;
-            btn.onclick = () => {
-                if (opt === level.answer) {
-                    document.getElementById('message').innerText = "✅ Benar!";
-                    document.getElementById('message').style.color = "green";
-                    setTimeout(() => {
-                        current = (current + 1) % data.length;
-                        loadLevel();
-                    }, 1000);
-                } else {
-                    document.getElementById('message').innerText = "❌ Coba lagi";
-                    document.getElementById('message').style.color = "red";
-                }
-            };
-            optionsDiv.appendChild(btn);
-        });
-    }
-    loadLevel();
-</script>
+    <script>
+        const levels = [
+            {img: '🍎', word: '_PEL', answer: 'A'}, {img: '🍌', word: '_ISANG', answer: 'P'},
+            {img: '🍇', word: '_NGGUR', answer: 'A'}, {img: '🍓', word: '_TR_WBERI', answer: 'S'},
+            {img: '🍍', word: '_ANAS', answer: 'N'}, {img: '🍒', word: '_ERI', answer: 'C'},
+            {img: '🥝', word: '_IWI', answer: 'K'}, {img: '🍉', word: '_EMANGKA', answer: 'S'},
+            {img: '🥑', word: '_PUKAT', answer: 'A'}, {img: '🍑', word: '_ERSIK', answer: 'P'},
+            {img: '🥭', word: '_ANGGA', answer: 'M'}, {img: '🍋', word: '_EMON', answer: 'L'},
+            {img: '🥥', word: '_ELAPA', answer: 'K'}, {img: '🍐', word: '_IR', answer: 'P'},
+            {img: '🍈', word: '_ELON', answer: 'M'}, {img: '🍊', word: '_ERUK', answer: 'J'},
+            {img: '🍏', word: '_PEL HIJAU', answer: 'A'}, {img: '🫐', word: '_LUBERRY', answer: 'B'},
+            {img: '🍅', word: '_OMAT', answer: 'T'}, {img: '🌽', word: '_AGUNG', answer: 'J'}
+        ];
+        let current = 0;
 
+        document.addEventListener('click', () => document.getElementById('bgMusic').play(), {once: true});
+
+        function triggerConfetti() {
+            for(let i=0; i<15; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti'; c.innerText = '🎊';
+                c.style.left = Math.random()*100 + 'vw';
+                document.body.appendChild(c);
+                setTimeout(() => c.remove(), 2000);
+            }
+        }
+
+        function load() {
+            const l = levels[current];
+            document.getElementById('imgDisplay').innerText = l.img;
+            document.getElementById('wordDisplay').innerText = l.word;
+            const optDiv = document.getElementById('options');
+            optDiv.innerHTML = '';
+            
+            // Membuat 3 opsi huruf
+            [l.answer, 'X', 'Y'].sort(() => Math.random()-0.5).forEach(char => {
+                const b = document.createElement('button');
+                b.className = 'btn'; b.innerText = char;
+                b.onclick = () => {
+                    if(char === l.answer) {
+                        document.getElementById('wordDisplay').innerText = l.word.replace('_', char);
+                        document.getElementById('soundBenar').play();
+                        triggerConfetti();
+                        setTimeout(() => { current = (current+1)%20; load(); }, 1500);
+                    } else {
+                        document.getElementById('soundSalah').play();
+                        b.style.background = '#ff7675';
+                    }
+                };
+                optDiv.appendChild(b);
+            });
+        }
+        load();
+    </script>
 </body>
 </html>
