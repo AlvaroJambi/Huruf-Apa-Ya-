@@ -9,22 +9,33 @@
             background: url('Background.png') no-repeat center center fixed; 
             background-size: cover;
             display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; 
+            overflow: hidden;
         }
-        .card { background: rgba(255, 255, 255, 0.9); padding: 40px; border-radius: 50px; text-align: center; width: 350px; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
-        .image { font-size: 100px; margin: 20px 0; filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.2)); }
-        .word { font-size: 3rem; font-weight: bold; color: #555; letter-spacing: 10px; margin: 20px 0; }
-        .options { display: flex; justify-content: center; gap: 20px; }
+        .card { 
+            background: rgba(255, 255, 255, 0.9); 
+            padding: 30px; 
+            border-radius: 50px; 
+            text-align: center; 
+            width: 320px; 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2); 
+        }
+        /* Jarak gambar ke bawah diperbesar */
+        .image { font-size: 80px; margin-bottom: 30px; filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.2)); }
+        .word { font-size: 2.5rem; font-weight: bold; color: #555; letter-spacing: 8px; margin-bottom: 30px; }
         
-        /* Tombol dengan garis putus-putus */
+        .options { display: flex; justify-content: center; gap: 15px; }
+        
+        /* Tombol diperkecil agar proporsional */
         .btn { 
-            width: 70px; height: 70px; border: 4px dashed #ff9ff3; border-radius: 20px; 
-            font-size: 28px; font-weight: bold; cursor: pointer; color: white;
-            background: #f8a5c2; box-shadow: 0 5px 0 #e77f67; /* Efek timbul */
+            width: 55px; height: 55px; border: 3px dashed #ff9ff3; border-radius: 15px; 
+            font-size: 20px; font-weight: bold; cursor: pointer; color: white;
+            background: #f8a5c2; box-shadow: 0 4px 0 #e77f67;
             transition: transform 0.1s;
         }
-        .btn:active { transform: translateY(5px); box-shadow: none; }
+        .btn:active { transform: translateY(4px); box-shadow: none; }
         
-        .confetti { position: fixed; font-size: 40px; z-index: 200; pointer-events: none; }
+        /* Animasi confetti menyebar dari atas ke bawah */
+        .confetti { position: fixed; font-size: 25px; z-index: 200; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -57,12 +68,20 @@
         document.addEventListener('click', () => document.getElementById('bgMusic').play(), {once: true});
 
         function triggerConfetti() {
-            for(let i=0; i<15; i++) {
+            for(let i=0; i<30; i++) {
                 const c = document.createElement('div');
                 c.className = 'confetti'; c.innerText = '🎊';
                 c.style.left = Math.random()*100 + 'vw';
+                c.style.top = '-20px';
                 document.body.appendChild(c);
-                setTimeout(() => c.remove(), 2000);
+                
+                // Animasi jatuh ke bawah dengan durasi acak
+                c.animate([
+                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                    { transform: `translateY(100vh) rotate(${Math.random()*360}deg)`, opacity: 0 }
+                ], { duration: 2000 + Math.random()*2000, easing: 'linear' });
+                
+                setTimeout(() => c.remove(), 4000);
             }
         }
 
@@ -73,7 +92,6 @@
             const optDiv = document.getElementById('options');
             optDiv.innerHTML = '';
             
-            // Membuat 3 opsi huruf
             [l.answer, 'X', 'Y'].sort(() => Math.random()-0.5).forEach(char => {
                 const b = document.createElement('button');
                 b.className = 'btn'; b.innerText = char;
