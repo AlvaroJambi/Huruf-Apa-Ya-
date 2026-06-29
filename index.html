@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Tebak Huruf Depan</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #f0f7ff; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .game-card { background: white; padding: 30px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; width: 350px; }
+        .image-placeholder { font-size: 80px; margin: 20px 0; }
+        .word-display { font-size: 2.5rem; font-weight: bold; color: #333; margin: 20px 0; }
+        .options { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        .btn-option { width: 60px; height: 60px; border-radius: 15px; border: none; font-size: 24px; font-weight: bold; cursor: pointer; color: white; }
+        #message { margin-top: 20px; font-weight: bold; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+
+<div class="game-card">
+    <h2 style="color: #666;">Tebak Huruf Depan</h2>
+    <div class="image-placeholder" id="image">🥕</div>
+    <div class="word-display" id="word">_ORTEL</div>
+    <div class="options" id="options"></div>
+    <div id="message"></div>
+</div>
+
+<script>
+    const data = [
+        { img: '🥕', word: '_ORTEL', answer: 'W', options: ['A', 'R', 'W'] },
+        { img: '🏀', word: '_OLA', answer: 'B', options: ['H', 'R', 'B'] }
+    ];
+    let current = 0;
+
+    function loadLevel() {
+        const level = data[current];
+        document.getElementById('image').innerText = level.img;
+        document.getElementById('word').innerText = level.word;
+        document.getElementById('message').innerText = "";
+        const optionsDiv = document.getElementById('options');
+        optionsDiv.innerHTML = '';
+        
+        level.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-option';
+            btn.style.backgroundColor = '#74b9ff';
+            btn.innerText = opt;
+            btn.onclick = () => {
+                if (opt === level.answer) {
+                    document.getElementById('message').innerText = "✅ Benar!";
+                    document.getElementById('message').style.color = "green";
+                    setTimeout(() => {
+                        current = (current + 1) % data.length;
+                        loadLevel();
+                    }, 1000);
+                } else {
+                    document.getElementById('message').innerText = "❌ Coba lagi";
+                    document.getElementById('message').style.color = "red";
+                }
+            };
+            optionsDiv.appendChild(btn);
+        });
+    }
+    loadLevel();
+</script>
+
+</body>
+</html>
