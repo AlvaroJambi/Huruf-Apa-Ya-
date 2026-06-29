@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Tebak Huruf Clay 3D</title>
+    <title>Huruf apa ya?</title>
     <style>
         body { 
             font-family: 'Segoe UI', sans-serif; 
@@ -12,26 +12,21 @@
             overflow: hidden;
         }
         .card { 
-            background: rgba(255, 255, 255, 0.9); 
-            padding: 30px; 
-            border-radius: 50px; 
-            text-align: center; 
-            width: 320px; 
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2); 
+            background: rgba(255, 255, 255, 0.9); padding: 30px; border-radius: 50px; 
+            text-align: center; width: 350px; box-shadow: 0 15px 30px rgba(0,0,0,0.2); 
         }
-        .image { font-size: 80px; margin-bottom: 30px; filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.2)); }
-        .word { font-size: 2.5rem; font-weight: bold; color: #555; letter-spacing: 8px; margin-bottom: 30px; }
-        .options { display: flex; justify-content: center; gap: 15px; }
-        
+        .header { display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: bold; }
+        h1 { margin: 0 0 20px 0; font-size: 1.5rem; color: #555; }
+        .image { font-size: 80px; margin-bottom: 20px; filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.2)); }
+        .word { font-size: 2.5rem; font-weight: bold; color: #555; letter-spacing: 8px; margin-bottom: 20px; }
+        .options { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; }
         .btn { 
             width: 55px; height: 55px; border: 3px dashed #ff9ff3; border-radius: 15px; 
             font-size: 20px; font-weight: bold; cursor: pointer; color: white;
             background: #f8a5c2; box-shadow: 0 4px 0 #e77f67;
-            transition: transform 0.1s;
         }
-        .btn:active { transform: translateY(4px); box-shadow: none; }
-        
-        /* Gaya dasar confetti */
+        .nav-btns { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .ctrl-btn { padding: 8px 15px; border-radius: 20px; border: none; cursor: pointer; background: #a29bfe; color: white; font-size: 0.8rem; }
         .confetti { position: fixed; font-size: 25px; z-index: 200; pointer-events: none; }
     </style>
 </head>
@@ -42,9 +37,20 @@
     <audio id="soundSalah" src="Salah.mp3"></audio>
 
     <div class="card">
+        <div class="header">
+            <span id="scoreText">Skor: 0</span>
+            <span id="levelText">Soal: 1/20</span>
+        </div>
+        <h1>Huruf apa ya?</h1>
         <div class="image" id="imgDisplay">🍎</div>
         <div class="word" id="wordDisplay">_PEL</div>
         <div class="options" id="options"></div>
+        <div class="nav-btns">
+            <button class="ctrl-btn" onclick="home()">Home</button>
+            <button class="ctrl-btn" onclick="load()">Ulang</button>
+            <button class="ctrl-btn" onclick="prev()">Kembali</button>
+            <button class="ctrl-btn" onclick="next()">Lanjut</button>
+        </div>
     </div>
 
     <script>
@@ -60,30 +66,21 @@
             {img: '🍏', word: '_PEL HIJAU', answer: 'A'}, {img: '🫐', word: '_LUBERRY', answer: 'B'},
             {img: '🍅', word: '_OMAT', answer: 'T'}, {img: '🌽', word: '_AGUNG', answer: 'J'}
         ];
-        let current = 0;
+        let current = 0, score = 0;
 
         document.addEventListener('click', () => document.getElementById('bgMusic').play(), {once: true});
 
         function triggerConfetti() {
-            for(let i=0; i<40; i++) {
+            for(let i=0; i<30; i++) {
                 const c = document.createElement('div');
                 c.className = 'confetti'; c.innerText = '🎊';
-                
-                // Posisi acak dari atas
-                c.style.left = Math.random()*100 + 'vw';
-                c.style.top = '-20px';
+                c.style.left = Math.random()*100 + 'vw'; c.style.top = '-20px';
                 document.body.appendChild(c);
-                
-                // Animasi menyebar: X bergerak ke kiri/kanan, Y jatuh ke bawah
-                const xEnd = (Math.random() - 0.5) * 500; // Sebaran horizontal
-                const yEnd = Math.random() * 500 + 500;   // Jatuh ke bawah
-                
                 c.animate([
-                    { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
-                    { transform: `translate(${xEnd}px, ${yEnd}px) rotate(${Math.random()*720}deg)`, opacity: 0 }
-                ], { duration: 2500 + Math.random()*1500, easing: 'cubic-bezier(0.1, 0.7, 0.3, 1)' });
-                
-                setTimeout(() => c.remove(), 4000);
+                    { transform: 'translate(0, 0)', opacity: 1 },
+                    { transform: `translate(${(Math.random()-0.5)*500}px, 800px)`, opacity: 0 }
+                ], { duration: 3000 });
+                setTimeout(() => c.remove(), 3000);
             }
         }
 
@@ -91,6 +88,7 @@
             const l = levels[current];
             document.getElementById('imgDisplay').innerText = l.img;
             document.getElementById('wordDisplay').innerText = l.word;
+            document.getElementById('levelText').innerText = `Soal: ${current + 1}/20`;
             const optDiv = document.getElementById('options');
             optDiv.innerHTML = '';
             
@@ -101,8 +99,9 @@
                     if(char === l.answer) {
                         document.getElementById('wordDisplay').innerText = l.word.replace('_', char);
                         document.getElementById('soundBenar').play();
+                        score += 10; document.getElementById('scoreText').innerText = `Skor: ${score}`;
                         triggerConfetti();
-                        setTimeout(() => { current = (current+1)%20; load(); }, 1500);
+                        setTimeout(next, 1500);
                     } else {
                         document.getElementById('soundSalah').play();
                         b.style.background = '#ff7675';
@@ -111,6 +110,11 @@
                 optDiv.appendChild(b);
             });
         }
+
+        function next() { current = (current + 1) % 20; load(); }
+        function prev() { current = (current - 1 + 20) % 20; load(); }
+        function home() { current = 0; score = 0; document.getElementById('scoreText').innerText = "Skor: 0"; load(); }
+        
         load();
     </script>
 </body>
