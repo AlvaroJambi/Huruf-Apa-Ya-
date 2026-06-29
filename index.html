@@ -19,13 +19,10 @@
             width: 320px; 
             box-shadow: 0 15px 30px rgba(0,0,0,0.2); 
         }
-        /* Jarak gambar ke bawah diperbesar */
         .image { font-size: 80px; margin-bottom: 30px; filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.2)); }
         .word { font-size: 2.5rem; font-weight: bold; color: #555; letter-spacing: 8px; margin-bottom: 30px; }
-        
         .options { display: flex; justify-content: center; gap: 15px; }
         
-        /* Tombol diperkecil agar proporsional */
         .btn { 
             width: 55px; height: 55px; border: 3px dashed #ff9ff3; border-radius: 15px; 
             font-size: 20px; font-weight: bold; cursor: pointer; color: white;
@@ -34,7 +31,7 @@
         }
         .btn:active { transform: translateY(4px); box-shadow: none; }
         
-        /* Animasi confetti menyebar dari atas ke bawah */
+        /* Gaya dasar confetti */
         .confetti { position: fixed; font-size: 25px; z-index: 200; pointer-events: none; }
     </style>
 </head>
@@ -68,18 +65,23 @@
         document.addEventListener('click', () => document.getElementById('bgMusic').play(), {once: true});
 
         function triggerConfetti() {
-            for(let i=0; i<30; i++) {
+            for(let i=0; i<40; i++) {
                 const c = document.createElement('div');
                 c.className = 'confetti'; c.innerText = '🎊';
+                
+                // Posisi acak dari atas
                 c.style.left = Math.random()*100 + 'vw';
                 c.style.top = '-20px';
                 document.body.appendChild(c);
                 
-                // Animasi jatuh ke bawah dengan durasi acak
+                // Animasi menyebar: X bergerak ke kiri/kanan, Y jatuh ke bawah
+                const xEnd = (Math.random() - 0.5) * 500; // Sebaran horizontal
+                const yEnd = Math.random() * 500 + 500;   // Jatuh ke bawah
+                
                 c.animate([
-                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
-                    { transform: `translateY(100vh) rotate(${Math.random()*360}deg)`, opacity: 0 }
-                ], { duration: 2000 + Math.random()*2000, easing: 'linear' });
+                    { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
+                    { transform: `translate(${xEnd}px, ${yEnd}px) rotate(${Math.random()*720}deg)`, opacity: 0 }
+                ], { duration: 2500 + Math.random()*1500, easing: 'cubic-bezier(0.1, 0.7, 0.3, 1)' });
                 
                 setTimeout(() => c.remove(), 4000);
             }
