@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>huruf apa ya?</title>
     <style>
-        /* CSS untuk memastikan background muncul dan menutupi layar */
+        /* Menggunakan Background_4.png sebagai latar belakang */
         body { 
             font-family: 'comic sans ms', 'arial', sans-serif; 
             margin: 0;
@@ -13,8 +13,7 @@
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            /* Memastikan gambar dipanggil dengan benar */
-            background-image: url('Background_3.png');
+            background-image: url('Background_4.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -22,10 +21,14 @@
             overflow: hidden;
         }
 
+        /* Kartu dibuat transparan (glassmorphism) */
         .card { 
             background: rgba(255, 255, 255, 0.2); 
-            padding: 30px; border-radius: 50px; 
-            text-align: center; width: 350px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+            padding: 30px; 
+            border-radius: 50px; 
+            text-align: center; 
+            width: 350px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border: 2px solid rgba(255, 255, 255, 0.4);
