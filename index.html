@@ -1,125 +1,258 @@
 <!DOCTYPE html>
+
 <html lang="id">
+
 <head>
+
     <meta charset="UTF-8">
+
     <title>huruf apa ya?</title>
+
     <style>
+
+        /* Mengatur Background_3.png sebagai latar belakang */
+
         body { 
+
             font-family: 'comic sans ms', 'arial', sans-serif; 
+
             background-image: url('Background_3.png'); 
+
             background-repeat: no-repeat;
+
             background-position: center center;
+
             background-attachment: fixed;
+
             background-size: cover;
+
             display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; 
+
             overflow: hidden;
+
         }
+
+
+
+        /* Kartu dibuat transparan dengan efek kaca (glassmorphism) */
+
         .card { 
+
             background: rgba(255, 255, 255, 0.2); 
+
             padding: 30px; border-radius: 50px; 
+
             text-align: center; width: 350px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+
             backdrop-filter: blur(15px);
+
+            -webkit-backdrop-filter: blur(15px);
+
             border: 2px solid rgba(255, 255, 255, 0.4);
+
         }
+
+
+
         .title-badge { 
+
             width: 250px; padding: 15px; margin: 0 auto 20px auto;
+
             background: rgba(214, 48, 49, 0.8); border-radius: 30px; font-weight: bold; color: white;
+
             font-size: 1.8rem; box-shadow: 0 6px 0 #b71c1c; border: 3px solid #b71c1c;
+
             text-transform: lowercase;
+
         }
+
+
+
         .header { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold; color: white; text-transform: lowercase; }
+
         .image { font-size: 100px; margin-bottom: 20px; filter: drop-shadow(0px 10px 5px rgba(0,0,0,0.2)); }
+
+        
+
         .word { font-size: 3rem; font-weight: bold; color: white; letter-spacing: 12px; margin-bottom: 25px; text-shadow: 2px 2px #333; text-transform: lowercase; }
+
+        
+
         .options { display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; }
+
+        
+
         .btn-option { 
+
             width: 65px; height: 65px; border-radius: 20px; font-size: 24px; font-weight: bold; 
+
             cursor: pointer; color: white; border: none; box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+
             text-transform: lowercase;
+
         }
+
+        
+
         .nav-btn { width: 65px; height: 65px; border-radius: 50%; border: none; background: #6c5ce7; color: white; cursor: pointer; font-size: 1.2rem; font-weight: bold; }
+
+        .confetti { position: fixed; font-size: 30px; z-index: 200; pointer-events: none; }
+
     </style>
+
 </head>
+
 <body>
 
+
+
+    <!-- Audio sesuai nama file -->
+
     <audio id="bgMusic" src="Musik.mp3" loop></audio>
+
     <audio id="soundBenar" src="Sound Benar.mpeg"></audio>
+
     <audio id="soundSalah" src="Sound Salah.mpeg"></audio>
 
+
+
     <div class="card">
+
         <div class="header">
+
             <span id="scoreText">skor: 0</span>
+
             <span id="levelText">1/20</span>
+
         </div>
+
         <div class="title-badge">huruf apa ya?</div>
+
         <div class="image" id="imgDisplay">🍎</div>
+
         <div class="word" id="wordDisplay">_pel</div>
+
         <div class="options" id="options"></div>
+
         <div class="nav-container" style="display:flex; justify-content:center; gap:25px;">
+
             <button class="nav-btn" onclick="prev()">◀</button>
+
             <button class="nav-btn" onclick="next()">▶</button>
+
         </div>
+
     </div>
 
+
+
     <script>
+
         const levels = [
-            {img: '🍎', word: '_pel', full: 'apel', answer: 'a'}, {img: '🍌', word: '_isang', full: 'pisang', answer: 'p'},
-            {img: '🍇', word: '_nggur', full: 'anggur', answer: 'a'}, {img: '🍓', word: '_trawberi', full: 'strawberry', answer: 's'},
-            {img: '🍍', word: '_anas', full: 'nanas', answer: 'n'}, {img: '🍒', word: '_eri', full: 'ceri', answer: 'c'},
-            {img: '🥝', word: '_iwi', full: 'kiwi', answer: 'k'}, {img: '🍉', word: '_emangka', full: 'semangka', answer: 's'},
-            {img: '🥑', word: '_pukat', full: 'alpukat', answer: 'a'}, {img: '🍑', word: '_ersik', full: 'persik', answer: 'p'},
-            {img: '🥭', word: '_angga', full: 'mangga', answer: 'm'}, {img: '🍋', word: '_emon', full: 'lemon', answer: 'l'},
-            {img: '🥥', word: '_elapa', full: 'kelapa', answer: 'k'}, {img: '🍐', word: '_ir', full: 'pir', answer: 'p'},
-            {img: '🍈', word: '_elon', full: 'melon', answer: 'm'}, {img: '🍊', word: '_eruk', full: 'jeruk', answer: 'j'},
-            {img: '🍏', word: '_pel hijau', full: 'apel hijau', answer: 'a'}, {img: '🫐', word: '_luberri', full: 'blueberry', answer: 'b'},
-            {img: '🍅', word: '_omat', full: 'tomat', answer: 't'}, {img: '🌽', word: '_agung', full: 'jagung', answer: 'j'}
+
+            {img: '🍎', word: '_pel', answer: 'a'}, {img: '🍌', word: '_isang', answer: 'p'},
+
+            {img: '🍇', word: '_nggur', answer: 'a'}, {img: '🍓', word: '_trawberi', answer: 's'},
+
+            {img: '🍍', word: '_anas', answer: 'n'}, {img: '🍒', word: '_eri', answer: 'c'},
+
+            {img: '🥝', word: '_iwi', answer: 'k'}, {img: '🍉', word: '_emangka', answer: 's'},
+
+            {img: '🥑', word: '_pukat', answer: 'a'}, {img: '🍑', word: '_ersik', answer: 'p'},
+
+            {img: '🥭', word: '_angga', answer: 'm'}, {img: '🍋', word: '_emon', answer: 'l'},
+
+            {img: '🥥', word: '_elapa', answer: 'k'}, {img: '🍐', word: '_ir', answer: 'p'},
+
+            {img: '🍈', word: '_elon', answer: 'm'}, {img: '🍊', word: '_eruk', answer: 'j'},
+
+            {img: '🍏', word: '_pel hijau', answer: 'a'}, {img: '🫐', word: '_luberri', answer: 'b'},
+
+            {img: '🍅', word: '_omat', answer: 't'}, {img: '🌽', word: '_agung', answer: 'j'}
+
         ];
 
+
+
         let current = 0, score = 0;
+
         const bgMusic = document.getElementById('bgMusic');
+
         const sBenar = document.getElementById('soundBenar');
+
         const sSalah = document.getElementById('soundSalah');
+
+
 
         document.addEventListener('click', () => { if(bgMusic.paused) bgMusic.play(); }, {once: true});
 
-        // Fungsi untuk mengucapkan kata
-        function speak(text) {
-            const msg = new SpeechSynthesisUtterance(text);
-            msg.lang = 'id-ID';
-            window.speechSynthesis.speak(msg);
-        }
+
 
         function load() {
+
             const l = levels[current];
+
             document.getElementById('imgDisplay').innerText = l.img;
+
             document.getElementById('wordDisplay').innerText = l.word;
+
             document.getElementById('levelText').innerText = `${current + 1}/20`;
+
             const optDiv = document.getElementById('options');
+
             optDiv.innerHTML = '';
+
             
+
             [l.answer, 'x', 'y'].sort(() => Math.random()-0.5).forEach(char => {
+
                 const b = document.createElement('button');
+
                 b.className = 'btn-option'; b.innerText = char;
+
                 b.style.backgroundColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+
                 b.onclick = () => {
+
                     if(char === l.answer) {
+
                         document.getElementById('wordDisplay').innerText = l.word.replace('_', char);
+
                         sBenar.play();
-                        speak(l.full); // Mengucapkan nama benda
+
                         score += 10; document.getElementById('scoreText').innerText = `skor: ${score}`;
-                        setTimeout(next, 2000);
+
+                        setTimeout(next, 1500);
+
                     } else {
+
                         sSalah.play();
+
                         b.style.opacity = '0.3';
+
                     }
+
                 };
+
                 optDiv.appendChild(b);
+
             });
+
         }
 
+
+
         function next() { current = (current + 1) % 20; load(); }
+
         function prev() { current = (current - 1 + 20) % 20; load(); }
+
         
+
         load();
+
     </script>
+
 </body>
+
 </html>
+
